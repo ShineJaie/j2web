@@ -1,0 +1,93 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+    <!-- 静态资源配置(不由 Spring Security 控制) -->
+    <http pattern="/static/**" security="none"/>
+
+    <http pattern="/login**" security="none"/>
+
+    <!-- enable use-expressions -->
+    <http auto-config="true" use-expressions="true">
+
+        <!-- 就近原则, 系统将使用第一个符合条件的intercept-url进行权限控制 -->
+        <intercept-url pattern="/" access="permitAll"/>
+        <!-- 任何用户都可以访问 -->
+        <intercept-url pattern="/logout" access="permitAll"/>
+        <intercept-url pattern="/admin**/**" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')"/>
+
+        <!-- access denied page -->
+        <access-denied-handler error-page="/403"/>
+
+        <form-login
+                login-page="/login"
+                default-target-url="/home"
+                always-use-default-target="true"
+                authentication-failure-url="/login?status=error"
+                username-parameter="username"
+                password-parameter="password"/>
+
+        <logout logout-success-url="/login?status=logout" delete-cookies="JSESSIONID"/>
+
+        <!-- session-authentication-error-url: 必须是不受 Spring Security 管理的(通过http元素设置其secure="none") -->
+        <!-- session-fixation-protection: session 固定攻击保护 -->
+        <session-management invalid-session-url="/login?status=invalid"
+                            session-authentication-error-url="/login?status=authenticationerror"
+                            session-fixation-protection="migrateSession">
+            <!--
+            当同一用户同时存在的已经通过认证的 session 数量超过了 max-sessions 所指定的值时, pring Security的默认策略是将先前的设为无效.
+            设置 error-if-maximum-exceeded 为 true 后如果你之前已经登录了, 然后想再次登录, 那么系统将会拒绝你的登录, 同时将重定向到由 form-login 指定的 authentication-failure-url,
+            如果你的再次登录是通过 Remember-Me 来完成的, 那么将不会转到 authentication-failure-url,
+            而是返回未授权的错误码401给客户端, 如果你还是想重定向一个指定的页面, 那么你可以通过 session-management 的 session-authentication-error-url 属性来指定,
+            同时需要指定该 url 为不受 Spring Security 管理，即通过 http 元素设置其 secure="none"
+            -->
+            <concurrency-control max-sessions="20" error-if-maximum-exceeded="true"/>
+        </session-management>
+
+        <!-- enable remember me -->
+        <!--
+        1.token-validity-seconds – The expire date of "remember-me" cookie, in seconds.
+            For example, 1209600 = 2 weeks (14 days), 86400 = 1 day, 18000 = 5 hours.
+        2.remember-me-parameter – The name of the "check box". Defaults to '_spring_security_remember_me'.
+        3.data-source-ref – If this is specified, "Persistent Token Approach" will be used. Defaults to "Simple Hash-Based Token Approach".
+        -->
+        <remember-me
+                token-validity-seconds="1209600"
+                remember-me-parameter="remember-me"
+                data-source-ref="dataSource"/>
+
+        <!-- spring security remember me 需要创建 PERSISTENT_LOGINS 表
+             CREATE TABLE persistent_logins (
+             username varchar(64) not null,
+             series varchar(64) not null,
+             token varchar(64) not null,
+             last_used timestamp not null,
+             PRIMARY KEY (series)
+             );-->
+
+    </http>
+
+    <!-- Password Hashing Bean -->
+    <beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+        <beans:constructor-arg name="strength" value="12"/>
+    </beans:bean>
+
+    <!-- Select users and user_roles from database -->
+    <authentication-manager erase-credentials="false">
+        <authentication-provider>
+            <jdbc-user-service data-source-ref="dataSource"
+                               users-by-username-query=
+                                       "select username, password, enabled from users where username = ?"
+                               authorities-by-username-query=
+                                       "select u.username, ur.authority from users u, user_roles ur where u.id = ur.user_id and u.username = ?"/>
+
+            <password-encoder ref="passwordEncoder"/>
+        </authentication-provider>
+    </authentication-manager>
+
+</beans:beans>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+    <definition name="default.definition" template="/WEB-INF/layouts/default.jsp">
+        <put-attribute name="meta" value="/WEB-INF/views/tiles/meta.jsp"/>
+        <put-attribute name="stylesheets_default" value="/WEB-INF/views/tiles/stylesheets.jsp"/>
+        <put-attribute name="stylesheets_self" value=""/>
+        <put-attribute name="is_support_h5" value="/WEB-INF/views/tiles/is_support_h5.jsp"/>
+        <put-attribute name="header" value="/WEB-INF/views/tiles/header.jsp"/>
+        <put-attribute name="content" value=""/>
+        <put-attribute name="footer" value="/WEB-INF/views/tiles/footer.jsp"/>
+        <put-attribute name="js_default" value="/WEB-INF/views/tiles/js.jsp"/>
+        <put-attribute name="js_self" value=""/>
+    </definition>
+
+    <definition name="home" extends="default.definition" preparer="com.j2web.web.utils.PJAXViewPreparer">
+        <put-attribute name="title" value="首页" type="string" cascade="true"/>
+        <put-attribute name="content" value="/WEB-INF/views/home/home_content.jsp"/>
+    </definition>
+
+</tiles-definitions>

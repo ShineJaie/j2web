@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+         http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+
+    <display-name>j2web</display-name>
+    <description>关于技术研究的测试性项目</description>
+
+    <!-- 编码过虑 -->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- spring 需要加载的配置文件路径 -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            classpath:/config/spring/*.xml
+        </param-value>
+    </context-param>
+
+    <!-- 然后接着是 SpringSecurity 必须的 filter 优先配置, 让 SpringSecurity 先加载, 防止 SpringSecurity 拦截失效  -->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Spring 监听 -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!-- 开启 Spring Security 的 session 管理 concurrency-control -->
+    <listener>
+        <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+    </listener>
+
+    <!-- log4j 日志配置 -->
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>classpath:/config/log/log4j.properties</param-value>
+    </context-param>
+    <listener>
+        <!-- 容器初始化 (销毁) 时开启 (关闭) Log4j -->
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
+
+    <!-- Spring MVC DispatcherServlet -->
+    <!-- 初始化 DispatcherServlet 时, 该框架在 web 应用程序 WEB-INF 目录中寻找一个名为
+         [servlet-名称]-servlet.xml的文件,
+         并在那里定义相关的Beans, 重写在全局中定义的任何 Beans -->
+    <servlet>
+        <servlet-name>spring</servlet-name>
+        <servlet-class>
+            org.springframework.web.servlet.DispatcherServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>spring</servlet-name>
+        <!-- 所有的的请求，都会被 DispatcherServlet 处理 -->
+        <url-pattern>/</url-pattern>
+        <!-- Spring MVC 中设置默认访问页面 -->
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <!-- 默认访问页面现无效, 由 spring security 控制 -->
+    <welcome-file-list>
+        <welcome-file>home</welcome-file>
+    </welcome-file-list>
+
+    <!-- 淘宝 Druid 数据源 监控配置 -->
+    <servlet>
+        <servlet-name>DruidStatView</servlet-name>
+        <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+        <init-param>
+            <!-- 用户名 -->
+            <param-name>loginUsername</param-name>
+            <param-value>admin</param-value>
+        </init-param>
+        <init-param>
+            <!-- 密码 -->
+            <param-name>loginPassword</param-name>
+            <param-value>123</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>DruidStatView</servlet-name>
+        <url-pattern>/druid/*</url-pattern>
+    </servlet-mapping>
+
+    <!--
+    &lt;!&ndash; 过滤器 用户登录验证 会拦截静态资源 采用springMVC 拦截器 &ndash;&gt;
+    &lt;!&ndash;配置过滤器&ndash;&gt;
+    <filter>
+        <filter-name>userSecurityFilter</filter-name>
+        <filter-class>com.system.bean.UserSecurityFilter</filter-class>
+    </filter>
+
+    &lt;!&ndash;映射过滤器&ndash;&gt;
+    <filter-mapping>
+        <filter-name>userSecurityFilter</filter-name>
+        &lt;!&ndash;"/*" 表示拦截所有的请求 &ndash;&gt;
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    -->
+
+    <!-- 出错页面定义, 有两种方式配置方式: (1)错误码 (2)异常 -->
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/500</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/500</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404</location>
+    </error-page>
+    <!--<error-page>
+        <error-code>403</error-code>
+        <location>/403.jsp</location>
+    </error-page>-->
+
+    <listener>
+        <description>系统启动的初始化</description>
+        <listener-class>com.j2web.web.utils.WebAppStartInit</listener-class>
+    </listener>
+
+    <!-- session 失效时间 20分钟 -->
+    <session-config>
+        <session-timeout>1</session-timeout>
+    </session-config>
+
+</web-app>

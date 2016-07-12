@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <context:component-scan base-package="com.j2web.web.test.quartz"/>
+
+    <!-- 任务类不需要继承任何父类, 也不需要实现任何接口, 只是一个普通的 java 类 -->
+    <!-- For times when you just need to invoke a method on a specific object -->
+    <bean id="simpleJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="myBean"/>
+        <property name="targetMethod" value="printMessage"/>
+        <!-- 是否允许任务并发执行, false 表示等上一个任务执行完后再开启新的任务, 默认 true-->
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <!-- 集成方式: JobDetailFactoryBean, 并且任务类需要继承 QuartzJobBean -->
+    <!-- For times when you need more complex processing, passing data to the scheduled job -->
+    <bean name="complexJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <!-- 目标类 -->
+        <property name="jobClass" value="com.j2web.web.test.quartz.ScheduledJob"/>
+        <property name="jobDataMap">
+            <map>
+                <entry key="anotherBean" value-ref="anotherBean"/>
+                <entry key="myBean" value-ref="myBean"/>
+            </map>
+        </property>
+        <!-- durability 表示任务完成之后是否依然保留到数据库, 默认 false -->
+        <property name="durability" value="true"/>
+    </bean>
+
+    <!--  调度触发器 simpleTrigger -->
+    <!-- 间隔时间执行的定时任务 -->
+    <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="jobDetail" ref="simpleJobDetail"/>
+        <!-- 定时任务延时1秒启动 -->
+        <property name="startDelay" value="1000"/>
+        <!-- 间隔2秒执行 -->
+        <property name="repeatInterval" value="2000"/>
+    </bean>
+
+    <!--  调度触发器 cronTrigger -->
+    <!-- 固定时间点执行的定时任务 -->
+    <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="complexJobDetail"/>
+        <!-- 格式: [秒] [分] [小时] [日] [月] [周] [年], 每隔5秒执行一次 -->
+        <property name="cronExpression" value="0/5 * * * * ?"/>
+    </bean>
+
+
+    <!-- 调度工厂 -->
+    <!-- Scheduler factory bean to glue together jobDetails and triggers to Configure Quartz Scheduler -->
+    <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="jobDetails">
+            <list>
+                <!--<ref bean="simpleJobDetail"/>-->
+                <!--<ref bean="complexJobDetail"/>-->
+            </list>
+        </property>
+
+        <property name="triggers">
+            <list>
+                <!--<ref bean="simpleTrigger"/>-->
+                <!--<ref bean="cronTrigger"/>-->
+            </list>
+        </property>
+
+        <!-- 线程池线程个数 -->
+        <property name="quartzProperties">
+            <props>
+                <prop key="org.quartz.threadPool.threadCount">1</prop>
+            </props>
+        </property>
+
+        <!-- 初始化之后延迟10秒启动 scheduler -->
+        <property name="startupDelay">
+            <value>10</value>
+        </property>
+
+    </bean>
+
+</beans>
