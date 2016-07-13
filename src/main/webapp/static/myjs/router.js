@@ -31,7 +31,6 @@ define(["jquery", "pjax", "config"], function router($, pjax, config) {
 
         // 2, 若有选中顶部栏相关组件, 则激活相应效果
         // 2.1, 激活按钮
-        $('[page_select="' + page_select + '"]').addClass('active');
         $('[page_select="' + page_select + '"]').parents('li').addClass('active');
         // 2.2, 打开下拉框组件
         $('[page_select="' + page_select + '"]').parents('.jtopbar-dropdown').addClass('open');

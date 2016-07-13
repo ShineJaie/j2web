@@ -8,6 +8,32 @@ define(['jquery', 'pjax', 'bootstrap', 'config', 'router', 'sidebar'],
         var initPart = function () {
 
             perfectDropdown();
+
+            gotoPageAction();
+        };
+
+
+        var gotoPageAction = function () {
+
+            $('#jtopbar-wrapper').off('click', '.jtop-menu').on('click', '.jtop-menu', function (e) {
+
+                var $this = $(this);
+
+                /*---------------------顶部栏相关激活效果---begin----------------------*/
+                // 1, 清除旧效果
+                // 1,1 关闭下拉框
+                $('.jtopbar-dropdown').removeClass('open');
+                // 1,2 取消按钮的激活效果
+                $('.jtop-menu').parents('li').removeClass('active');
+
+                // 2, 若有选中顶部栏相关组件, 则激活相应效果
+                // 2.1, 激活按钮
+                $this.parents('li').addClass('active');
+                // 2.2, 打开下拉框组件
+                $this.parents('.jtopbar-dropdown').addClass('open');
+
+                /*---------------------顶部栏相关激活效果---end----------------------*/
+            });
         };
 
         /**
