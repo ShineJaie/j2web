@@ -392,3 +392,8 @@ div.DTCR_pointer {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
+
+/* 导航条链接的激活效果 */
+a.jtop-menu.active {
+    color: #fff;
+}

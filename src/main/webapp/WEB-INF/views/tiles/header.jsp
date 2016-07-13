@@ -19,7 +19,7 @@
                 </li>
             </sec:authorize>
             <li>
-                <a page_select="page_home" class="jside-menu" href="#">
+                <a class="jside-menu" href="#">
                     <i class="fa fa-newspaper-o"></i>&nbsp; 新增资讯</a>
             </li>
             <li>
@@ -143,14 +143,14 @@
 
                         <form class="navbar-right" action="${logoutUrl}" method="post">
                             <p class="navbar-text"><i class="fa fa-user"></i>&nbsp; 用户名:
-                                <a class="navbar-link pa-userinfo" href="#"
+                                <a class="navbar-link pa-userinfo jtop-menu" href="#"
                                    style="padding-left: 5px;">
                                         ${pageContext.request.userPrincipal.name}</a>
                             </p>
 
                             <p class="navbar-text" style="color: #d2d2d2; padding-left: 5px;">|</p>
 
-                            <a class="btn btn-link" type="submit" style="padding-top: 15px;"
+                            <a class="btn btn-link jtop-menu" type="submit" style="padding-top: 15px;"
                                href="${logoutUrl}"><i class="fa fa-leaf"></i>&nbsp; 安全退出</a>
 
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -158,7 +158,7 @@
 
                         <p class="navbar-text navbar-right" style="color: #d2d2d2; padding-left: 5px;">|</p>
 
-                        <a data-pjax page_select="page_register" class="btn btn-link" style="padding-top: 15px"
+                        <a data-pjax page_select="page_register" class="btn btn-link jtop-menu" style="padding-top: 15px;"
                            href="<c:url value='/register'/>">
                             <i class="fa fa-registered"></i>&nbsp; 用户注册
                         </a>

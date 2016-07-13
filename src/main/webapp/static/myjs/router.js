@@ -1,9 +1,11 @@
-define(["jquery", "pjax", "config"], function router($, pjax, config) {
+define(['jquery', 'pjax', 'config', 'sidebar', 'topbar'], function ($, pjax, config, sidebar, sidebar) {
 
     var initRouter = function () {
 
         // 激活 pjax 请求
         $(document).pjax('a[data-pjax]', '#page-content-wrapper');
+
+        setSelected();
 
         loadAction();
     };
@@ -20,7 +22,7 @@ define(["jquery", "pjax", "config"], function router($, pjax, config) {
     };
 
     var setSelected = function () {
-        var page_select = $("#jcontent-wrapper").attr("menuSelct");
+        var page_select = $("#jcontent-wrapper").attr("menuSelect");
 
         /*---------------------顶部栏相关激活效果---begin----------------------*/
         // 1, 清除旧效果
@@ -28,12 +30,19 @@ define(["jquery", "pjax", "config"], function router($, pjax, config) {
         $('.jtopbar-dropdown').removeClass('open');
         // 1,2 取消按钮的激活效果
         $('.jtop-menu').parents('li').removeClass('active');
+        $('.jtop-menu').removeClass('active');
 
-        // 2, 若有选中顶部栏相关组件, 则激活相应效果
-        // 2.1, 激活按钮
-        $('[page_select="' + page_select + '"]').parents('li').addClass('active');
-        // 2.2, 打开下拉框组件
-        $('[page_select="' + page_select + '"]').parents('.jtopbar-dropdown').addClass('open');
+        // 获取顶部栏相关 Dom 对象
+        var topbarTarget = '.jtop-menu[page_select="' + page_select + '"]';
+
+        if ($(topbarTarget).length > 0) {
+            // 2, 若有选中顶部栏相关组件, 则激活相应效果
+            // 2.1, 激活按钮
+            $(topbarTarget).parents('li').addClass('active');
+            $(topbarTarget).addClass('active');
+            // 2.2, 打开下拉框组件
+            $(topbarTarget).parents('.jtopbar-dropdown').addClass('open');
+        }
         /*---------------------顶部栏相关激活效果---end----------------------*/
 
         /*---------------------侧边栏相关激活效果---begin-----------------------*/
@@ -41,17 +50,24 @@ define(["jquery", "pjax", "config"], function router($, pjax, config) {
         // 1.1, 关闭下拉框组件
         $('.jsidebar-dropdown').removeClass('open');
         // 1.2, 取消按钮的激活效果
-        $('.btn-jmenu').css('background-color', '');
+        $('.jside-menu').css('background-color', '');
+        $('.jsidebar-dropdown').css('background-color', '');
 
 
         // 取得侧边栏相关 Dom 对象
-        var sidebarTarget = '.btn-jmenu.' + target;
+        var sidebarTarget = '.jside-menu[page_select="' + page_select + '"]';
 
-        if (isTarget && target && $(sidebarTarget).length > 0) {
+        if ($(sidebarTarget).length > 0) {
             // 2, 若有选中侧边栏相关组件, 则激活相应效果
             // 2.1, 激活按钮, 效果来自伪元素
             var cssAttr = window.getComputedStyle($(sidebarTarget).parent()[0], '::before').getPropertyValue('background-color');
             $(sidebarTarget).css('background-color', cssAttr);
+            // 2.1.2, 如果有上级节点应同时选中上级节点
+            var parentsNum = $(sidebarTarget).parents(".jsidebar-dropdown").length;
+            if (parentsNum > 0) {
+                var cssAttr_parent = window.getComputedStyle($(sidebarTarget).parents(".jsidebar-dropdown")[parentsNum - 1], '::before').getPropertyValue('background-color');
+                $(sidebarTarget).parents(".jsidebar-dropdown").css('background-color', cssAttr_parent);
+            }
             // 2.2, 打开下拉框组件
             $(sidebarTarget).parents('.jsidebar-dropdown').addClass('open');
 

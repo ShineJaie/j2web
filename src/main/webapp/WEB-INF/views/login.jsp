@@ -86,7 +86,7 @@
                                     <small class="remember-me-text text-info" for="remember-me">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp; 保存登录状态 :&nbsp;
                                     </small>
-                                    <input type="checkbox" name="remember-me" id="remember-me" checked/>
+                                    <label for="remember-me"></label><input type="checkbox" name="remember-me" id="remember-me"/>
                                 </div>
                             </c:if>
 

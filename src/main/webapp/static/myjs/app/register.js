@@ -1,5 +1,5 @@
-define(['jquery', 'pjax', 'bootstrap', 'config', 'router', 'sweetalert', 'jquery.validate', 'icheck'],
-    function ($, pjax, bootstrap, config, router, sweetalert, jquery_validate, iCheck) {
+define(['jquery', 'pjax', 'bootstrap', 'config', 'sweetalert', 'jquery.validate', 'icheck'],
+    function ($, pjax, bootstrap, config, sweetalert, jquery_validate, iCheck) {
 
         /**
          * 加载注册页面, 并初始化相关事件

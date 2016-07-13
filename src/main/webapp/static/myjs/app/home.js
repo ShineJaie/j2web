@@ -1,5 +1,5 @@
-define(['jquery', 'pjax', 'bootstrap', 'config', 'router'],
-    function ($, pjax, bootstrap, config, router) {
+define(['jquery', 'pjax', 'bootstrap', 'config'],
+    function ($, pjax, bootstrap, config) {
 
         var initpage_home = function () {
 

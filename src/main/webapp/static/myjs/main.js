@@ -127,6 +127,6 @@ requirejs.config({
 /**
  * 初始化页面布局
  */
-define(['jquery', 'pjax', 'bootstrap', 'config', 'router', 'sidebar', 'topbar'], function ($, pjax, bootstrap, config, router, sidebar, topbar) {
+define(['jquery', 'pjax', 'bootstrap', 'config', 'sidebar', 'topbar', 'router'], function ($, pjax, bootstrap, config, sidebar, topbar, router) {
 
 });

@@ -1,5 +1,5 @@
-define(['jquery', 'pjax', 'bootstrap', 'config', 'router', 'sidebar'],
-    function ($, pjax, bootstrap, config, router, sidebar) {
+define(['jquery', 'pjax', 'bootstrap', 'config', 'sidebar'],
+    function ($, pjax, bootstrap, config, sidebar) {
 
         /**
          * 初始化顶部栏
@@ -21,17 +21,29 @@ define(['jquery', 'pjax', 'bootstrap', 'config', 'router', 'sidebar'],
 
                 /*---------------------顶部栏相关激活效果---begin----------------------*/
                 // 1, 清除旧效果
-                // 1,1 关闭下拉框
+                // 1,1 关闭下拉框并取消选中
                 $('.jtopbar-dropdown').removeClass('open');
+                $('.jtopbar-dropdown').removeClass('active');
+                $this.removeClass('active');
                 // 1,2 取消按钮的激活效果
                 $('.jtop-menu').parents('li').removeClass('active');
+                $('.jtop-menu').removeClass('active');
 
                 // 2, 若有选中顶部栏相关组件, 则激活相应效果
                 // 2.1, 激活按钮
                 $this.parents('li').addClass('active');
+                $this.addClass('active');
                 // 2.2, 打开下拉框组件
                 $this.parents('.jtopbar-dropdown').addClass('open');
 
+                // 3, 取消侧边栏的选中效果
+                $('.jsidebar-dropdown').css('background-color', '');
+                $('.jside-menu').css('background-color', '');
+                $('.jsidebar-dropdown').removeClass('open');
+                // 3.2, 关闭侧边栏
+                if (!$('.hamburger').hasClass('is-closed')) {
+                    $('.hamburger').trigger('click');
+                }
                 /*---------------------顶部栏相关激活效果---end----------------------*/
             });
         };

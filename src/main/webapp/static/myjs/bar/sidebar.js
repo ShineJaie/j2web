@@ -1,4 +1,4 @@
-define(['jquery', 'pjax', 'bootstrap', 'config', 'router', 'nprogress'], function ($, pjax, bootstrap, config, router, NProgress) {
+define(['jquery', 'pjax', 'bootstrap', 'config'], function ($, pjax, bootstrap, config) {
 
     /**
      * 初始化侧边栏
@@ -46,9 +46,15 @@ define(['jquery', 'pjax', 'bootstrap', 'config', 'router', 'nprogress'], functio
             $('.jsidebar-dropdown').removeClass('open');
             // 2.2, 打开点击所在的菜单
             $this.parents('.jsidebar-dropdown').addClass('open');
-            // 2.3, 关闭栏部栏选中效果
-            $('.btn-jmenu-top').closest('li').removeClass('active');
+            // 2.3, 关闭顶部栏选中效果
+            $('.jtop-menu').closest('li').removeClass('active');
+            $('.jtop-menu').closest('li').removeClass('active');
 
+            // 3, 取消顶部栏的选中效果
+            $('.jtopbar-dropdown').removeClass('open');
+            $('.jtopbar-dropdown').removeClass('active');
+            $('.jtop-menu').parents('li').removeClass('active');
+            $('.jtop-menu').removeClass('active');
             /*------------------end 实现菜单按钮激活效果--------------------*/
 
         });

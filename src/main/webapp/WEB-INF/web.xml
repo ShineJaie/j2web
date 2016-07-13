@@ -147,9 +147,9 @@
         <listener-class>com.j2web.web.utils.WebAppStartInit</listener-class>
     </listener>
 
-    <!-- session 失效时间 20分钟 -->
+    <!-- session 失效时间 10 分钟 -->
     <session-config>
-        <session-timeout>1</session-timeout>
+        <session-timeout>10</session-timeout>
     </session-config>
 
 </web-app>
