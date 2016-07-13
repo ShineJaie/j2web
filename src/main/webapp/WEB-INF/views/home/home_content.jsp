@@ -1,7 +1,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div class="container">
+<div class="container" id="jcontent-wrapper" funcModel="home" funcInit="initpage_home" menuSelct="page_home">
     <div class="row">
         <div class="col-lg-8 col-lg-offset-2">
 
@@ -34,9 +34,4 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="text-center">
-            <i class="fa fa-copyright"></i> <em>copyright from Shine Jaie</em>
-        </div>
-    </div>
 </div>

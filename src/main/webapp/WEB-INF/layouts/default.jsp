@@ -1,5 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -19,8 +19,8 @@
         <tiles:insertAttribute name="content"/>
     </div>
     <tiles:insertAttribute name="footer"/>
-    <tiles:insertAttribute name="js_default"/>
-    <tiles:insertAttribute name="js_self"/>
 </div>
+<tiles:insertAttribute name="js_default"/>
+<tiles:insertAttribute name="js_self"/>
 </body>
 </html>
