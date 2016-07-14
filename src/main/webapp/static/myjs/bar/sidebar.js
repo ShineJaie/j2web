@@ -1,20 +1,5 @@
-define(['jquery', 'pjax', 'bootstrap', 'config'], function ($, pjax, bootstrap, config) {
+define(['jquery', 'pjax', 'bootstrap', 'config', 'domReady!'], function ($, pjax, bootstrap, config) {
 
-    /**
-     * 初始化侧边栏
-     *
-     */
-    var initPart = function () {
-
-        initSideAction();
-
-        gotoPageAction();
-    };
-
-    /**
-     * 添加页面跳转事件
-     *
-     */
     var gotoPageAction = function () {
 
         // Avoid bootstrap dropdown menu close on click inside
@@ -105,13 +90,12 @@ define(['jquery', 'pjax', 'bootstrap', 'config'], function ($, pjax, bootstrap, 
         });
     };
 
-    /*-----------------------------------------------------*/
+    (function () {
+        console.log('init sidebar');
 
-    require(['domReady'], function (domReady) {
-        domReady(function () {
-            console.log('init sidebar');
-            initPart();
-        });
-    });
+        initSideAction();
+
+        gotoPageAction();
+    })();
 
 });

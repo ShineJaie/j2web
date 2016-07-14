@@ -1,4 +1,4 @@
-define(['jquery', 'pjax', 'bootstrap', 'config'],
+define(['jquery', 'pjax', 'bootstrap', 'config', 'domReady!'],
     function ($, pjax, bootstrap, config) {
 
         var initpage_home = function () {

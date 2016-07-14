@@ -1,169 +1,99 @@
-define(['jquery', 'pjax', 'bootstrap', 'config', 'sweetalert', 'jquery.validate', 'icheck'],
-    function ($, pjax, bootstrap, config, sweetalert, jquery_validate, iCheck) {
+define(['jquery', 'pjax', 'bootstrap', 'config', 'sweetalert', 'validate_conf', 'init_icheck', 'domReady!'],
+    function ($, pjax, bootstrap, config, sweetalert, validate_conf, init_icheck) {
 
-        /**
-         * 加载注册页面, 并初始化相关事件
-         */
         var initpage_register = function () {
 
-            initICheck();
-            initICheckValue();
-            runICheck();
+            init_icheck.initICheck();
+            init_icheck.initICheckRadioValue('input:radio');
+            init_icheck.runICheckRadio();
 
-            validateAction();
-        };
-
-        var initICheck = function () {
-            $('input').iCheck({
-                checkboxClass: 'icheckbox_flat-blue',
-                radioClass: 'iradio_flat-blue'
+            validate_conf.setValidConfig();
+            validate_conf.validateAction('#register_form', {
+                email: {
+                    required: true,
+                    email: true
+                },
+                username: {
+                    required: true,
+                    username: true,
+                    minlength: 2,
+                    maxlength: 15
+                },
+                password: {
+                    required: true,
+                    digitAlphabet: true,
+                    minlength: 6,
+                    maxlength: 30
+                },
+                confirmPassword: {
+                    required: true,
+                    digitAlphabet: true,
+                    minlength: 6,
+                    maxlength: 30,
+                    equalTo: "#password"
+                },
+                agree: "required"
             });
-        };
 
-        var initICheckValue = function () {
-            $('input:radio').each(function () {
-                if (!$(this).attr("param_value")) {
-                    $(this).attr("param_value", false);
-                } else if ($(this).attr("param_value") == "false") {
-                    $(this).iCheck('uncheck');
-                } else {
-                    $(this).iCheck('check');
-                }
-            });
+            submitAction();
         };
-
-        var runICheck = function () {
-            $('input:radio').off('ifChecked').on('ifChecked', function (event) {
-                $(this).attr("param_value", true);
-            });
-            $('input:radio').off('ifUnchecked').on('ifUnchecked', function (event) {
-                $(this).attr("param_value", false);
-            });
-        };
-
 
         /**
          * 表单验证
          */
-        var validateAction = function () {
+        var submitAction = function () {
 
-            var validateMsg = {
-                required: "必选字段",
-                remote: "请修正该字段",
-                email: "请输入正确格式的电子邮件",
-                url: "请输入合法的网址",
-                date: "请输入合法的日期",
-                dateISO: "请输入合法的日期 (ISO).",
-                number: "请输入合法的数字",
-                digits: "只能输入整数",
-                creditcard: "请输入合法的信用卡号",
-                equalTo: "请再次输入相同的值",
-                accept: "请输入拥有合法后缀名的字符串",
-                maxlength: jQuery.validator.format("请输入一个长度最多是 {0} 的字符串"),
-                minlength: jQuery.validator.format("请输入一个长度最少是 {0} 的字符串"),
-                rangelength: jQuery.validator.format("请输入一个长度介于 {0} 和 {1} 之间的字符串"),
-                range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
-                max: jQuery.validator.format("请输入一个最大为 {0} 的值"),
-                min: jQuery.validator.format("请输入一个最小为 {0} 的值")
-            };
+            $('.act_save').off('click').on('click', function () {
 
-            jQuery.extend(jQuery.validator.messages, validateMsg);
+                if ($('#register_form').valid()) {
+                    var params = {};
 
-            $('#registerForm').validate({
-                rules: {
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                    username: {
-                        required: true,
-                        minlength: 2
-                    },
-                    password: {
-                        required: true,
-                        minlength: 6
-                    },
-                    confirmPassword: {
-                        required: true,
-                        minlength: 6,
-                        equalTo: "#password"
-                    },
-                    agree: "required"
-                },
-                errorElement: "em",
-                errorPlacement: function (error, element) {
-                    // Add the `help-block` class to the error element
-                    error.addClass("help-block");
-
-                    // Add `has-feedback` class to the parent div.form-group
-                    // in order to add icons to inputs
-                    element.parents(".col-sm-5").addClass("has-feedback");
-
-                    if (element.prop("type") === "checkbox") {
-                        error.insertAfter(element.parent("label"));
-                    } else {
-                        error.insertAfter(element);
-                    }
-
-                    // Add the span element, if doesn't exists, and apply the icon classes to it.
-                    if (!element.next("span")[0]) {
-                        $("<span class='glyphicon glyphicon-remove form-control-feedback'></span>").insertAfter(element);
-                    }
-                },
-                success: function (label, element) {
-                    // Add the span element, if doesn't exists, and apply the icon classes to it.
-                    if (!$(element).next("span")[0]) {
-                        $("<span class='glyphicon glyphicon-ok form-control-feedback'></span>").insertAfter($(element));
-                    }
-                },
-                highlight: function (element, errorClass, validClass) {
-                    $(element).parents(".col-sm-5").addClass("has-error").removeClass("has-success");
-                    $(element).next("span").addClass("glyphicon-remove").removeClass("glyphicon-ok");
-                },
-                unhighlight: function (element, errorClass, validClass) {
-                    $(element).parents(".col-sm-5").addClass("has-success").removeClass("has-error");
-                    $(element).next("span").addClass("glyphicon-ok").removeClass("glyphicon-remove");
-                }
-            });
-
-            $('.dbtn-confirm').off('click').on('click', function () {
-
-                if ($('#registerForm').valid()) {
-                    var regParam = {};
-
-                    $('.myEditValue').each(function () {
-                        regParam[$(this).attr('name')] = $(this).val();
+                    $('.my_edit_value').each(function () {
+                        params[$(this).attr('name')] = $(this).val();
                     });
 
-                    if ($('.radioMale').attr('param_value') == 'true') {
-                        regParam.sex = 1;
+                    if ($('.radio_male').attr('param_value') == 'true') {
+                        params.sex = 1;
                     } else {
-                        regParam.sex = 0;
+                        params.sex = 0;
                     }
 
-                    /*$.post(url_register, regParam, function (rst) {
+                    $.post("/j2web/register/save", params, function (res) {
 
-                     if (rst.status == 'success') {
+                        if (res.status == 'success') {
 
-                     swal({
-                     title: "恭喜!",
-                     text: "注册成功, 2秒后将自动关闭该提示!",
-                     type: "success",
-                     timer: 2000,
-                     confirmButtonText: "确认:)"
-                     });
-                     } else {
-                     swal({
-                     title: "抱歉!",
-                     text: rst.data,
-                     type: "error",
-                     confirmButtonText: "确认:("
-                     });
-                     }
+                            swal({
+                                title: "恭喜!",
+                                text: "注册成功, 2秒后将自动关闭该提示!",
+                                type: "success",
+                                timer: 2000,
+                                confirmButtonText: "确认:)"
+                            });
 
-                     });*/
+                            $.pjax.reload('#page-content-wrapper');
+                        } else {
+                            swal({
+                                title: "抱歉!",
+                                text: res.data,
+                                type: "error",
+                                confirmButtonText: "确认:("
+                            });
+                        }
+
+                    });
+
+
+                    /*// 测试 pjax 动态加载其它页面
+                    $.pjax({
+                        type: 'POST',
+                        url: "/j2web/home",
+                        container: '#page-content-wrapper',
+                        data: params,
+                        dataType: 'html'
+                    })*/
                 }
             });
+
         };
 
         return {

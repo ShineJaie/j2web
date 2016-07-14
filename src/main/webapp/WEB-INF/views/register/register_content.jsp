@@ -15,13 +15,13 @@
                 </div>
 
                 <div class="panel-body">
-                    <form id="registerForm" method="post" class="form-horizontal" action="">
+                    <form id="register_form" method="post" class="form-horizontal" action="">
 
                         <div class="form-group">
                             <label class="col-sm-4 control-label" for="email">邮箱</label>
 
                             <div class="col-sm-5">
-                                <input type="text" class="form-control myEditValue" id="email" name="email"
+                                <input type="text" class="form-control my_edit_value" id="email" name="email"
                                        placeholder="邮箱"/>
                             </div>
                         </div>
@@ -30,7 +30,7 @@
                             <label class="col-sm-4 control-label" for="username">用户名</label>
 
                             <div class="col-sm-5">
-                                <input type="text" class="form-control myEditValue" id="username"
+                                <input type="text" class="form-control my_edit_value" id="username"
                                        name="username"
                                        placeholder="用户名"/>
                             </div>
@@ -40,7 +40,7 @@
                             <label class="col-sm-4 control-label" for="password">登录密码</label>
 
                             <div class="col-sm-5">
-                                <input type="password" class="form-control myEditValue" id="password"
+                                <input type="password" class="form-control my_edit_value" id="password"
                                        name="password"
                                        placeholder="登录密码"/>
                             </div>
@@ -61,7 +61,7 @@
 
                             <div class="col-sm-5">
                                 <label class="radio-inline">
-                                    <input class="radioMale" type="radio" name="sex" value="1"
+                                    <input class="radio_male" type="radio" name="sex" value="1"
                                            param_value="true">
                                     <span style="padding-left: 5px;">男</span>
                                 </label>
@@ -85,7 +85,7 @@
 
                         <div class="form-group">
                             <div class="col-sm-9 col-sm-offset-4">
-                                <button type="button" class="btn btn-primary dbtn-confirm" value="确定">确定
+                                <button type="button" class="btn btn-primary act_save" value="确定">确定
                                 </button>
                             </div>
                         </div>

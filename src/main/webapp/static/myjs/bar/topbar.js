@@ -1,17 +1,5 @@
-define(['jquery', 'pjax', 'bootstrap', 'config', 'sidebar'],
+define(['jquery', 'pjax', 'bootstrap', 'config', 'sidebar', 'domReady!'],
     function ($, pjax, bootstrap, config, sidebar) {
-
-        /**
-         * 初始化顶部栏
-         *
-         */
-        var initPart = function () {
-
-            perfectDropdown();
-
-            gotoPageAction();
-        };
-
 
         var gotoPageAction = function () {
 
@@ -75,13 +63,12 @@ define(['jquery', 'pjax', 'bootstrap', 'config', 'sidebar'],
 
         };
 
-        /*-----------------------------------------------------*/
+        (function () {
+            console.log('init topbar');
 
-        require(['domReady'], function (domReady) {
-            domReady(function () {
-                console.log('init topbar');
-                initPart();
-            });
-        });
+            perfectDropdown();
+
+            gotoPageAction();
+        })();
 
     });

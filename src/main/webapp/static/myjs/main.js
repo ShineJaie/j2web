@@ -112,6 +112,8 @@ requirejs.config({
 
         'config': 'myjs/config', // 网站基础配置
 
+        'init_icheck': 'myjs/utils/init_icheck', // icheck 初始化工具
+        'validate_conf': 'myjs/utils/validate_conf', // jquery.validate 相关配置
         'listtable': 'myjs/utils/listtable', // 有关列表的的工具
         'popupdialog': 'myjs/utils/popupdialog', // 有关弹出框工具
 
