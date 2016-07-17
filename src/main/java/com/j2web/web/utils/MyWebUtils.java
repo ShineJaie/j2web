@@ -34,7 +34,7 @@ public class MyWebUtils implements ApplicationContextAware {
      * 使用 JedisPool, 这是一个线程安全的网络连接池, 可以将其存贮为一个静态的.<br/>
      * 当 jedis 无法从连接池获取连接时, 它将会断开并且关闭 jedis.
      */
-    public static JedisPool JEDIS_POOL = null;
+    public static JedisPool jedisPool = null;
 
     public ApplicationContext getApplicationContext() {
         return APPLICATION_CONTEXT;

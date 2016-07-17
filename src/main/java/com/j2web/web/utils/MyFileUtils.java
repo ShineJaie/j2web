@@ -17,7 +17,7 @@ public class MyFileUtils {
     /**
      * 网站根路径
      */
-    public static String ROOT_PATH = "";
+    public static String rootPath = "";
 
     /**
      * 删除指定路径的文件或目录

@@ -29,7 +29,7 @@ public class JedisTester {
         user.put("age", 25);
         user.put("null", null);
 
-        JedisPool jedisPool = MyWebUtils.JEDIS_POOL;
+        JedisPool jedisPool = MyWebUtils.jedisPool;
 
         try (Jedis jedis = jedisPool.getResource()) {
 

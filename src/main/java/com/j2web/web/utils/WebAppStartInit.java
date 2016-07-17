@@ -24,14 +24,14 @@ public class WebAppStartInit implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
 
         // 获取网站根路径
-        MyFileUtils.ROOT_PATH = servletContextEvent.getServletContext().getRealPath("/");
+        MyFileUtils.rootPath = servletContextEvent.getServletContext().getRealPath("/");
 
         String msg = "网站正在启动中...";
         logger.info(msg);
 
         // 初始化 jedis 连接池
         String ip = "localhost";
-        MyWebUtils.JEDIS_POOL = new JedisPool(new JedisPoolConfig(), ip);
+        MyWebUtils.jedisPool = new JedisPool(new JedisPoolConfig(), ip);
         logger.info("初始化 jedis 连接池");
 
     }
@@ -47,7 +47,7 @@ public class WebAppStartInit implements ServletContextListener {
         String msg = "网站下线中...";
         logger.info(msg);
 
-        MyWebUtils.JEDIS_POOL.destroy();
+        MyWebUtils.jedisPool.destroy();
         logger.info("销毁 jedis 连接池");
     }
 }
