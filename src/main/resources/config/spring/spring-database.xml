@@ -32,19 +32,19 @@
     </bean>
 
     <!-- MyBatis 配置一 -->
-    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <!-- 配置淘宝数据源 Druid -->
         <property name="dataSource" ref="druidDataSource"/>
         <!-- 一堆 xml 文件，用来存放 sql 语句 -->
         <property name="mapperLocations" value="classpath:com/j2web/web/database/mapper/**/*.xml"/>
         <!-- 对应实体类所属的包名 -->
-        <property name="typeAliasesPackage" value="com.db.model"/>
+        <property name="typeAliasesPackage" value="com.database.model"/>
     </bean>
 
     <!-- MyBatis 配置二 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.db.mapper"/>
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBean"/>
+        <property name="basePackage" value="com.database.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 
 </beans>
