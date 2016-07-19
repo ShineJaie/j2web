@@ -1,0 +1,46 @@
+反射：加载一个运行时才得知名称的 class （类），获悉其完整构造。
+
+简单写法：
+Class clazz = Class.forName("XXX"); // 获取类
+Object obj = clazz.newInstance(); // 实例化
+Method method = clazz.getMethod("方法名"[, 参数类型]); // 获取方法
+method.invoke(实例化后的对象, 参数);
+
+Annotation[] annotations = clazz.getAnnotations(); // 获取类上的注解
+Annotation[] annotations = method.getAnnotations(); // 获取方法上的注解
+
+通过反射还能获取“注解”
+注解是从 JDK1.5 过后引入的机制。
+从属于这个包：java.lang.annotation.
+所谓注解，从名词上解释就是为了“描述某一件事情而写的文字”。
+
+注解写法：
+定义注解是使用@interface（不是 interface），可以理解为一个特殊的 java 接口。
+在注解里所有的“属性”以方法的形式存在，所以定义所谓的“属性”必须所下所示：
+String name() default "这里写默认值"
+
+Java 对注解定义了下列几种基本类型：
+
+@Target
+被描述的注解可以用在什么地方
+取值（ElementType）有：
+    1、CONSTRUCTOR: 用于描述构造器
+    2、FIELD：用于描述域
+    3、LOCAL_VARIABLE：用于描述局部变量
+    4、METHOD：用于描述方法
+    5、PACKAGE：用于描述包
+    6、PARAMETER：用于描述参数
+    7、TYPE：用于描述类、接口（包括注解类型）或 enum 声明
+
+@Retention
+被描述的注解在什么范围内有效
+取值（RetentionPolicy）有：
+    1、SOURCE：在源文件中有效（即源文件保留）
+    2、CLASS：在 class 文件中有效（即 class 保留）
+    3、RUNTIME：在运行时有效（即运行时保留）
+
+@Documented
+用于 javadoc 文档的生成
+
+@Inherited
+子类继承父类的注解
