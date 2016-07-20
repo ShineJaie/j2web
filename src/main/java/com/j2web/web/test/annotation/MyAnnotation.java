@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * 自定义一个注解
  * Created by wxj on 16-7-19.
  */
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.METHOD, ElementType.TYPE, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MyAnnotation {
 

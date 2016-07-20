@@ -8,6 +8,17 @@ method.invoke(实例化后的对象, 参数);
 
 Annotation[] annotations = clazz.getAnnotations(); // 获取类上的注解
 Annotation[] annotations = method.getAnnotations(); // 获取方法上的注解
+Field[] fields = clazz.getDeclaredFields(); // 获取类自已经申明的属性， 不包括父类
+for (Field field : fields) {
+    Annotation[] annotations = field.getAnnotations(); // 获取属性上的所有注解
+    for (Annotation annotation : annotations) {
+        if (MyAnnotation.class.isInstance(annotation)) { // 判断 annotation 是否是 MyAnnotation 的实例
+            // 获取申明类的名称 如 class com.j2web.web.utils.WebAppStartInit
+            String getClassName = field.getGenericType().toString();
+            System.out.println(getClassName);
+        }
+    }
+}
 
 通过反射还能获取“注解”
 注解是从 JDK1.5 过后引入的机制。

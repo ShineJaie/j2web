@@ -1,6 +1,7 @@
 package com.j2web.web.test.annotation;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
@@ -26,11 +27,21 @@ public class ReflectTester {
             // 获取注解
 //            Annotation[] annotations = clazz.getAnnotations(); // 获取类上的注解
 //            Annotation[] annotations = method.getAnnotations(); // 获取方法上的注解
-//            for (Annotation annotation : annotations) {
-//                System.out.println(annotation);
-//            }
-            MyAnnotation annotation = method.getAnnotation(MyAnnotation.class); // 获取方法上的 MyAnnotation 注解
-            System.out.println(annotation.name());
+
+//            MyAnnotation annotation = method.getAnnotation(MyAnnotation.class); // 获取方法上的 MyAnnotation 注解
+//            System.out.println(annotation.name());
+
+            Field[] fields = clazz.getDeclaredFields(); // 获取类自已经申明的属性， 不包括父类
+            for (Field field : fields) {
+                Annotation[] annotations = field.getAnnotations(); // 获取属性上的所有注解
+                for (Annotation annotation : annotations) {
+                    if (MyAnnotation.class.isInstance(annotation)) { // 判断 annotation 是否是 MyAnnotation 的实例
+                        // 获取申明类的名称 如 class com.j2web.web.utils.WebAppStartInit
+                        String getClassName = field.getGenericType().toString();
+                        System.out.println(getClassName);
+                    }
+                }
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
