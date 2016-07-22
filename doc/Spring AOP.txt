@@ -1,4 +1,4 @@
-OOP：封装、继承、多态
+面向对象（OOP）三大基本属性：封装、继承、多态
 
 AOP：Aspect Oriented Programming
 
@@ -8,3 +8,15 @@ AOP 是 OOP 的延续（增强/补充）。也是 spring 里面很重要的一�
 实战中，业务逻辑部分、事务部分使用 AOP 是很频繁的。
 
 IOC（Inversion of Control） 容器：可以理解为，仿佛配置文件在帮我们实例化类，并完成各自之间的“交互”。
+
+调用
+BeanFactory factory = new ClassPathXmlApplicationContext("config/test/aop-config.xml");
+接口 实例名 = (接口)factory.getBean("配置 id");
+
+BeanFactory 定义了 IOC 容器的最基本形式，是个接口。具体的实现类如常用的 ClassPathXmlApplicationContext
+可以根据配置自动帮我们实例化类。
+常用的有：
+从 classpath 获取配置文件；默认为项目的 classpath 下相对路径。
+1、BeanFactory factory = new ClassPathXmlApplicationContext("xxx.xml");
+2、new ClassPathXmlApplicationContext("file:D:/app.spring.xml"); // 用 file 前缀表示具体的文件目录
+3、new ClassPathXmlApplicationContext("*.xml"); // 通配符加载

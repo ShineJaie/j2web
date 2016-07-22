@@ -15,8 +15,8 @@ import java.util.Arrays;
 @Component
 public class LoggingAspect {
 
-    // com.j2web.web.test 包及所有子包下任何类的任何方法
-    @Before("execution(* com.j2web.web.test..*.*(..))")
+    // com.j2web.web.test.aop 包及所有子包下任何类的任何方法
+    @Before("execution(* com.j2web.web.test.aop..*.*(..))")
     public void logBefore(JoinPoint joinPoint) {
 
         System.out.println("logBefore() is running!");
