@@ -1,5 +1,7 @@
 package com.j2web.web.db.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -8,7 +10,9 @@ import java.util.Date;
 public class Users {
 
     private int id; // 自增长 id
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdate; // 创建日期
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date modifydate; // 修改日期
     private String username; // 用户名
     private String password; // 密码

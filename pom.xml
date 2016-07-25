@@ -21,6 +21,7 @@
         <org.aspectj.version>1.8.6</org.aspectj.version>
         <org.springsecurity.version>3.2.9.RELEASE</org.springsecurity.version>
         <javax.servlet.version>3.1.0</javax.servlet.version>
+        <com.fasterxml.jackson.version>2.7.5</com.fasterxml.jackson.version>
         <redis.clients.jedis.version>2.8.0</redis.clients.jedis.version>
         <org.quartz-scheduler.quartz.version>2.2.1</org.quartz-scheduler.quartz.version>
     </properties>
@@ -276,6 +277,26 @@
             <version>20090211</version>
         </dependency>
         <!-- end: org.json -->
+
+        <!-- begin: jackson -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${com.fasterxml.jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${com.fasterxml.jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${com.fasterxml.jackson.version}</version>
+        </dependency>
+        <!-- end: jackson -->
 
         <!-- begin: mybatis 与 spring 整合 -->
         <dependency>

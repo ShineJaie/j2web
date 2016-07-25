@@ -54,6 +54,8 @@ public class LoginController {
             if (StringUtils.hasText(targetUrl)) {
                 mav.addObject("loginUpdate", true);
             }
+        } else {
+            response.setStatus(499); // 登录过期的状态码(自定义, 避免和已经存在的 http 状态码相同)
         }
 
         if (status.equals("logout")) {

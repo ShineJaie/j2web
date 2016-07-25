@@ -4,6 +4,7 @@ import com.j2web.web.db.mapper.UserMapper;
 import com.j2web.web.db.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -31,6 +32,13 @@ public class UserService {
 //        int num = 10 / 0;
 //        throw new RuntimeException("手动抛出运行时异常");
 //        throw new Exception("手工 checked 异常");
+    }
+
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public Users getUser(Integer userId) {
+        Users user = new Users();
+        user.setId(userId);
+        return userMapper.selectById(user).get(0);
     }
 
 }
