@@ -13,11 +13,13 @@
 
     <context:property-placeholder location="classpath:/config/jdbc/jdbc.properties"/>
 
-    <!-- 设置需要进行 Spring 注解扫描的类包 -->
+    <!-- Spring 自动扫描 base-package 下面或者子包下面的 java 文件，如果扫描到有
+        @Component @Controller @Service 等这些注解的类，则把这些类注册为 bean -->
     <context:component-scan base-package="com.j2web.web"/>
 
     <!-- SpringMVC上传文件时, 需要配置MultipartResolver处理器 -->
-    <!-- 这样一旦某个 Request 是一个 MultipartRequest, 它就会首先被 MultipartResolver 处理，然后再转发相应的 Controller -->
+    <!-- 这样一旦某个 Request 是一个 MultipartRequest, 它就会首先被 MultipartResolver 处理，
+        然后再转发相应的 Controller -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <!-- setting maximum upload size -->
         <!-- 指定所上传文件的总大小(单位为: Byte), 注意 maxUploadSize 属性的限制不是针对单个文件, 而是所有文件的容量之和 -->

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.j2web.web.db.mapper.UserMapper">
+
+    <select id="selectAll" resultType="Users">
+        SELECT *
+        FROM users
+    </select>
+
+    <select id="selectById" parameterType="Users" resultType="Users">
+        SELECT *
+        FROM users
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertUser" parameterType="Users">
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            SELECT last_insert_id()
+        </selectKey>
+        INSERT INTO users (createdate, username, `password`, email, sex, enabled)
+        VALUES (#{createdate}, #{username}, #{password}, #{email}, #{sex}, #{enabled})
+    </insert>
+
+    <insert id="insertUsers" parameterType="list">
+        INSERT INTO users (createdate, username, `password`, email, sex, enabled)
+        VALUES
+        <foreach collection="list" item="user" separator=",">
+            (#{user.createdate}, #{user.username}, #{user.password}, #{user.email}, #{user.sex}, #{user.enabled})
+        </foreach>
+    </insert>
+
+    <update id="updateMulti" parameterType="Users">
+        UPDATE users
+        SET username =
+        CASE id
+        WHEN -1
+        THEN
+        CONCAT('impossible', -1)
+        ELSE
+        CONCAT(username, id)
+        END
+        WHERE
+        id IN
+        <foreach collection="list" item="user" open="(" separator="," close=")">
+            #{user.id}
+        </foreach>
+    </update>
+
+</mapper>

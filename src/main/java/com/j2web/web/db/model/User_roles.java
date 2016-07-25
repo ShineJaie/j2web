@@ -1,4 +1,4 @@
-package com.j2web.web.database.model;
+package com.j2web.web.db.model;
 
 /**
  * 用户角色表
@@ -6,9 +6,9 @@ package com.j2web.web.database.model;
  */
 public class User_roles {
 
-    public int id; // 自增长 id
-    public int user_id; // users表的id
-    public String authority; // 角色
+    private int id; // 自增长 id
+    private int user_id; // users表的id
+    private String authority; // 角色
 
     public int getId() {
         return id;

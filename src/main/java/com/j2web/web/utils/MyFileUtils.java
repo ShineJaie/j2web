@@ -179,4 +179,23 @@ public class MyFileUtils {
 
         ImageIO.write(thumbImage, "jpg", new File(thumbnail));
     }
+
+    /**
+     * 获取与根目录同级的文件上传目录
+     *
+     * @return .../webapps/j2webFiles/j2web
+     */
+    public static String getFileUploadPath() {
+
+        String[] pathSplits = rootPath.replaceAll("\\\\", "/").split("/");
+
+        String res = "";
+
+        for (int i = 0; i < pathSplits.length - 1; ++i) {
+            res += (pathSplits[i] + "/");
+        }
+
+        return res + "j2webFiles/j2web";
+    }
+
 }

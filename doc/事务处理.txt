@@ -1,0 +1,23 @@
+Spring 开始事务管理
+
+    <!-- 事务管理器，开启 Spring 事务处理 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 事务注解驱动，标注 @Transactional 的类和方法将具有事务性 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+注意以下几点：
+1、不要直接在映射的接口上加事务注解，我们应该专门创建一个业务类来处理。
+2、Spring 默认会在发生任何 unchecked 异常时产生回滚，譬如直接写 @Transactional 注解。
+那么出现未处理异常或手动抛出 RuntimeException 时均会触发事务回滚。
+3、可以加上 @Transactional(rollbackFor=Exception.class) 那么任何 checked 或 unchecked
+异常均会导致事务回滚。
+4、如果在类上设置了 @Transactional 那么该类下所有方法均会触发事务。但是有些仅仅是查询并不
+需要事务，那么应该在该方法上单独加上如下注解：
+@Transactional(propagation=Propagation.NOT_SUPPORTED,readOnly=true)
+
+关于 Unchecked 和 Checked 异常：
+Unchecked 异常继承自 java.lang.RuntimeException类。譬如程序错误、逻辑错误等。
+Checked 异常必须被显式地捕获或者传递，譬如 try-catch-finally，或者你在所在的方法上加上 throws。

@@ -1,4 +1,4 @@
-package com.j2web.web.database.model;
+package com.j2web.web.db.model;
 
 import java.util.Date;
 
@@ -7,14 +7,14 @@ import java.util.Date;
  */
 public class Users {
 
-    public int id; // 自增长 id
-    public Date createdate; // 创建日期
-    public Date modifydate; // 修改日期
-    public String username; // 用户名
-    public String password; // 密码
-    public String email; // 邮箱
-    public int sex; // 性别, 1: 男, 2: 女
-    public int enable; // 是否启用, 1: 启用, 0: 不启用
+    private int id; // 自增长 id
+    private Date createdate; // 创建日期
+    private Date modifydate; // 修改日期
+    private String username; // 用户名
+    private String password; // 密码
+    private String email; // 邮箱
+    private int sex; // 性别, 1: 男, 2: 女
+    private int enabled; // 是否启用, 1: 启用, 0: 不启用
 
     public int getId() {
         return id;
@@ -72,11 +72,11 @@ public class Users {
         this.sex = sex;
     }
 
-    public int getEnable() {
-        return enable;
+    public int getEnabled() {
+        return enabled;
     }
 
-    public void setEnable(int enable) {
-        this.enable = enable;
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
     }
 }

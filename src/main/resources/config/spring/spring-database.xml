@@ -1,10 +1,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	   http://www.springframework.org/schema/context
-	   http://www.springframework.org/schema/context/spring-context.xsd">
+	   http://www.springframework.org/schema/context/spring-context.xsd
+	   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <context:property-placeholder location="classpath:/config/jdbc/jdbc.properties"/>
 
@@ -31,19 +33,27 @@
         <property name="initialSize" value="5"/>
     </bean>
 
+    <!-- 事务管理器，开启 Spring 事务处理 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="druidDataSource"/>
+    </bean>
+
+    <!-- 事务注解驱动，标注 @Transactional 的类和方法将具有事务性 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
     <!-- MyBatis 配置一 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <!-- 配置淘宝数据源 Druid -->
         <property name="dataSource" ref="druidDataSource"/>
         <!-- 一堆 xml 文件，用来存放 sql 语句 -->
-        <property name="mapperLocations" value="classpath:com/j2web/web/database/mapper/**/*.xml"/>
+        <property name="mapperLocations" value="classpath:com/j2web/web/db/mapper/**/*.xml"/>
         <!-- 对应实体类所属的包名 -->
-        <property name="typeAliasesPackage" value="com.database.model"/>
+        <property name="typeAliasesPackage" value="com.j2web.web.db.model"/>
     </bean>
 
     <!-- MyBatis 配置二 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.database.mapper"/>
+        <property name="basePackage" value="com.j2web.web.db.mapper"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 

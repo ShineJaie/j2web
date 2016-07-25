@@ -75,9 +75,7 @@
         </property>
 
         <!-- 初始化之后延迟10秒启动 scheduler -->
-        <property name="startupDelay">
-            <value>10</value>
-        </property>
+        <property name="startupDelay" value="10"/>
 
     </bean>
 

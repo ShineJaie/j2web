@@ -38,32 +38,30 @@ public class LoginController {
 
         String status = MyWebUtils.dealWithNullVal(request.getParameter("status"));
 
-        ModelAndView model = new ModelAndView();
+        ModelAndView mav = new ModelAndView();
 
         if (status.equals("invalid")) {
-            model.addObject("error", "会话已经过期!");
+            mav.addObject("error", "会话已经过期!");
             logger.info("会话已经过期");
-        }
+            response.setStatus(499); // 登录过期的状态码(自定义, 避免和已经存在的 http 状态码相同)
 
-        if (status.equals("error")) {
-            model.addObject("error", "用户名或密码错误!");
+        } else if (status.equals("error")) {
+            mav.addObject("error", "用户名或密码错误!");
             logger.info("用户名或密码错误");
 
             // 更新登录, 如果登录错误再次获取登录后的目标地址
             String targetUrl = getRememberMeTargetUrlFromSession(request);
             if (StringUtils.hasText(targetUrl)) {
-                model.addObject("loginUpdate", true);
+                mav.addObject("loginUpdate", true);
             }
         }
 
         if (status.equals("logout")) {
-            model.addObject("msg", "注销成功!");
+            mav.addObject("msg", "注销成功!");
         }
-        model.setViewName("login");
+        mav.setViewName("login");
 
-        response.setStatus(499); // 登录过期的状态码(自定义, 避免和已经存在的 http 状态码一样)
-
-        return model;
+        return mav;
     }
 
     /**
@@ -115,21 +113,21 @@ public class LoginController {
     @RequestMapping(value = "/admin**")
     public ModelAndView adminPage(HttpServletRequest request) {
 
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("title", "Spring Security 表单登录 - 能过数据库身份认证");
-        mv.addObject("message", "此页面只有管理员才可访问!");
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("title", "Spring Security 表单登录 - 能过数据库身份认证");
+        mav.addObject("message", "此页面只有管理员才可访问!");
 
         if (isRememberMeAuthenticated()) {
             // 更新登录
             setRememberMeTargetUrlToSession(request, "/admin");
-            mv.addObject("loginUpdate", true);
-            mv.setViewName("/login");
+            mav.addObject("loginUpdate", true);
+            mav.setViewName("/login");
 
         } else {
-            mv.setViewName("admin");
+            mav.setViewName("admin");
         }
 
-        return mv;
+        return mav;
     }
 
     /**
@@ -140,7 +138,7 @@ public class LoginController {
     @RequestMapping(value = "/403")
     public ModelAndView accesssDenied() {
 
-        ModelAndView mv = new ModelAndView();
+        ModelAndView mav = new ModelAndView();
 
         //check if user is login
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -148,11 +146,11 @@ public class LoginController {
         if (!(auth instanceof AnonymousAuthenticationToken)) {
 
             UserDetails userDetail = (UserDetails) auth.getPrincipal();
-            mv.addObject("username", userDetail.getUsername());
+            mav.addObject("username", userDetail.getUsername());
         }
 
-        mv.setViewName("/error/403");
-        return mv;
+        mav.setViewName("/error/403");
+        return mav;
     }
 
     /**

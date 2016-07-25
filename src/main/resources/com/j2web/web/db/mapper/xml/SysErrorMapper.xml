@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.j2web.web.db.mapper.SysErrorMapper">
+
+    <insert id="insertSysError" parameterType="Sys_error">
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            SELECT last_insert_id()
+        </selectKey>
+        INSERT INTO sys_error (createdate, operator, method, args, `error`)
+        VALUES (#{createdate}, #{operator}, #{method}, #{args}, #{error})
+    </insert>
+
+</mapper>
