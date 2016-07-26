@@ -1,7 +1,7 @@
-package com.j2web.web.db.mapper;
+package com.j2web.web.db.master.mapper;
 
 
-import com.j2web.web.db.model.Users;
+import com.j2web.web.db.master.model.Users;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

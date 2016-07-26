@@ -8,52 +8,88 @@
 	   http://www.springframework.org/schema/context/spring-context.xsd
 	   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
+    <!-- 引入属性文件 -->
     <context:property-placeholder location="classpath:/config/jdbc/jdbc.properties"/>
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
         <property name="url" value="${jdbc.url}"/>
         <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
-    </bean>
+    </bean>-->
 
     <!-- 淘宝 Druid 数据源配置 -->
     <!-- 为监控而生的数据库连接池 -->
     <bean id="druidDataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <!-- 属性类型是字符串，通过别名的方式配置扩展插件 -->
+        <property name="filters" value="stat"/>
+        <!-- 初始化连接大小 -->
+        <property name="initialSize" value="5"/>
+        <!-- 连接池最大使用连接数量 -->
+        <property name="maxActive" value="20"/>
+        <!-- 连接池最小空闲 -->
+        <property name="minIdle" value="0"/>
+        <!-- 获取连接最大等待时间 单位毫秒 -->
+        <property name="maxWait" value="60000"/>
+    </bean>
+
+    <!-- 配置数据源 Master -->
+    <bean id="dataSourceMaster" parent="druidDataSource">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
         <!-- allowMultiQueries=true 配置数据源一次可以执行多条 sql 语句 -->
         <property name="url" value="${jdbc.url}"/>
         <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
-
-        <property name="filters" value="stat"/>
-        <!--最大连接数量 -->
-        <property name="maxActive" value="20"/>
-        <!--初始连接数 -->
-        <property name="initialSize" value="5"/>
     </bean>
 
-    <!-- 事务管理器，开启 Spring 事务处理 -->
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="druidDataSource"/>
+    <!-- 配置数据源 Slave -->
+    <bean id="dataSourceSlave" parent="druidDataSource">
+        <property name="driverClassName" value="${jdbc2.driverClassName}"/>
+        <!-- allowMultiQueries=true 配置数据源一次可以执行多条 sql 语句 -->
+        <property name="url" value="${jdbc2.url}"/>
+        <property name="username" value="${jdbc2.username}"/>
+        <property name="password" value="${jdbc2.password}"/>
     </bean>
 
-    <!-- 事务注解驱动，标注 @Transactional 的类和方法将具有事务性 -->
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!-- 数据库路由配置 -->
+    <bean id="dataSource" class="com.j2web.web.utils.db.ThreadLocalRountingDataSource">
+        <property name="defaultTargetDataSource" ref="dataSourceMaster"/>
+        <property name="targetDataSources">
+            <map key-type="com.j2web.web.utils.db.DataSources">
+                <entry key="MASTER" value-ref="dataSourceMaster"/>
+                <entry key="SLAVE" value-ref="dataSourceSlave"/>
+                <!-- 这里还可以加多个 dataSource -->
+            </map>
+        </property>
+    </bean>
 
     <!-- MyBatis 配置一 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <!-- 配置淘宝数据源 Druid -->
-        <property name="dataSource" ref="druidDataSource"/>
+        <property name="dataSource" ref="dataSource"/>
+        <!-- mybatis 的配置文件 -->
+        <!--<property name="configLocation" value="classpath:config/jdbc/mybatis-config.xml"/>-->
         <!-- 一堆 xml 文件，用来存放 sql 语句 -->
-        <property name="mapperLocations" value="classpath:com/j2web/web/db/mapper/**/*.xml"/>
+        <property name="mapperLocations" value="classpath:com/j2web/web/db/**/*.xml"/>
         <!-- 对应实体类所属的包名 -->
-        <property name="typeAliasesPackage" value="com.j2web.web.db.model"/>
+        <property name="typeAliasesPackage" value="com.j2web.web.db.master.model,
+        com.j2web.web.db.slave.model"/>
     </bean>
+
+    <!-- 对于单个 JDBC 数据源的事务管理器 -->
+    <!-- 事务管理器，开启 Spring 事务处理 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 使用annotation定义事务 -->
+    <!-- 事务注解驱动，标注 @Transactional 的类和方法将具有事务性 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <!-- MyBatis 配置二 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.j2web.web.db.mapper"/>
+        <property name="basePackage" value="com.j2web.web.db.master.mapper,
+        com.j2web.web.db.slave.mapper"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 

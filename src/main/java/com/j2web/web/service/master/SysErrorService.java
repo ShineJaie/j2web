@@ -1,7 +1,7 @@
-package com.j2web.web.service;
+package com.j2web.web.service.master;
 
-import com.j2web.web.db.mapper.SysErrorMapper;
-import com.j2web.web.db.model.Sys_error;
+import com.j2web.web.db.master.mapper.SysErrorMapper;
+import com.j2web.web.db.master.model.Sys_error;
 import com.j2web.web.utils.MyWebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

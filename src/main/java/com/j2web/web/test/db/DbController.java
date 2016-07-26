@@ -1,30 +1,34 @@
 package com.j2web.web.test.db;
 
-import com.j2web.web.db.mapper.UserMapper;
-import com.j2web.web.service.UserService;
+import com.j2web.web.db.master.mapper.UserMapper;
+import com.j2web.web.service.master.UserService;
+import com.j2web.web.service.slave.CustomerService;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 数据库操作测试类
  * Created by wxj on 16-7-25.
  */
-@Controller
+@RestController
 public class DbController {
 
     @Autowired
     UserMapper userMapper;
     @Autowired
     UserService userService;
+    @Autowired
+    CustomerService customerService;
 
-    @RequestMapping(value = "/test/db")
-    public void showUsers(HttpServletResponse response) throws IOException {
-
-        response.setHeader("Content-Type", "text/html;charset=utf-8");
+    @RequestMapping(value = "/test/db", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public String testDb() throws IOException {
 
         /*Users user = new Users();
         user.setId(6);
@@ -79,11 +83,14 @@ public class DbController {
         int res = userMapper.updateMulti(new ArrayList<>(Arrays.asList(user3, user4, user5)));
         response.getWriter().write(String.valueOf(res));*/
 
-        try {
+        /*try {
             userService.addUser("kitty", 2);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
+
+        List<Map<String, Object>> list = customerService.showAll();
+        return new JSONArray(list).toString();
     }
 
 }

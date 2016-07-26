@@ -1,4 +1,4 @@
-package com.j2web.web.db.model;
+package com.j2web.web.db.master.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

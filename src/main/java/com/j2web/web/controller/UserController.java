@@ -1,7 +1,7 @@
 package com.j2web.web.controller;
 
-import com.j2web.web.db.model.Users;
-import com.j2web.web.service.UserService;
+import com.j2web.web.db.master.model.Users;
+import com.j2web.web.service.master.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

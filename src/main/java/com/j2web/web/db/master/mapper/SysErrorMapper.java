@@ -1,6 +1,6 @@
-package com.j2web.web.db.mapper;
+package com.j2web.web.db.master.mapper;
 
-import com.j2web.web.db.model.Sys_error;
+import com.j2web.web.db.master.model.Sys_error;
 import org.springframework.stereotype.Component;
 
 /**

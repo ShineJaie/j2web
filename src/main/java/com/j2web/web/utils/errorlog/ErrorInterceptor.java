@@ -1,6 +1,6 @@
 package com.j2web.web.utils.errorlog;
 
-import com.j2web.web.service.SysErrorService;
+import com.j2web.web.service.master.SysErrorService;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -14,8 +14,8 @@ import java.util.Arrays;
  * 记录全局异常
  * Created by wxj on 16-7-25.
  */
-@Aspect
-@Component
+@Aspect // for aop
+@Component // for auto scan
 public class ErrorInterceptor {
 
     @Autowired
@@ -24,17 +24,13 @@ public class ErrorInterceptor {
     private static final Logger logger = Logger.getLogger(ErrorInterceptor.class);
 
     @AfterThrowing(
-            pointcut = "execution(* com.j2web.web.controller..*.*(..)) || " +
-                    "execution(* com.j2web.web.service..*.*(..)) || " +
-                    "execution(* com.j2web.web.utils..*.*(..)) || " +
-                    "execution(* com.j2web.web.test..*.*(..))",
+            pointcut = "execution(* com.j2web.web.service..*.*(..)) && " +
+                    "!execution(* com.j2web.web.service.master.SysErrorService.*(..)))",
             throwing = "error")
     public void logError(JoinPoint joinPoint, Throwable error) {
 
-
         String method = joinPoint.getSignature().toString();
         String args = Arrays.asList(joinPoint.getArgs()).toString();
-        sysErrorService.addLog(method, args, error.toString());
 
         logger.error(">>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         logger.error("方法：" + method);
@@ -42,6 +38,7 @@ public class ErrorInterceptor {
         logger.error("错误 : " + error.toString());
         logger.error("<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 
+        sysErrorService.addLog(method, args, error.toString());
     }
 
 }

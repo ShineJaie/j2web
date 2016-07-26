@@ -1,11 +1,9 @@
 package com.j2web.web.controller.register;
 
-import com.j2web.web.db.model.Users;
+import com.j2web.web.db.master.model.Users;
 import com.j2web.web.utils.MyWebUtils;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 

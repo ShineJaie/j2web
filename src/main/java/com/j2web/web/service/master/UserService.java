@@ -1,7 +1,7 @@
-package com.j2web.web.service;
+package com.j2web.web.service.master;
 
-import com.j2web.web.db.mapper.UserMapper;
-import com.j2web.web.db.model.Users;
+import com.j2web.web.db.master.mapper.UserMapper;
+import com.j2web.web.db.master.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
