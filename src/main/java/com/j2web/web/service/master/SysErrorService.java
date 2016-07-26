@@ -15,13 +15,12 @@ import java.util.Calendar;
  * Created by wxj on 16-7-25.
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 public class SysErrorService {
 
     @Autowired
     SysErrorMapper sysErrorMapper;
 
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void addLog(String method, String args, String error) {
 
         Sys_error data = new Sys_error();

@@ -21,3 +21,71 @@ Spring 开始事务管理
 关于 Unchecked 和 Checked 异常：
 Unchecked 异常继承自 java.lang.RuntimeException类。譬如程序错误、逻辑错误等。
 Checked 异常必须被显式地捕获或者传递，譬如 try-catch-finally，或者你在所在的方法上加上 throws。
+
+spring 事务注解
+默认遇到 throw new RuntimeException("..."); 会回滚
+需要捕获的 throw new Exception("..."); 不会回滚
+
+// 让 checked 异常也回滚
+@Transactional(rollbackFor=Exception.class)
+    public void methodName() {
+       // 会回滚
+       throw new Exception("...");
+    }
+//  让 unchecked 异常也不回滚
+@Transactional(noRollbackFor=RunTimeException.class)
+    public ItimDaoImpl getItemDaoImpl() {
+        // 不会回滚
+        throw new RuntimeException("异常注释");
+    }
+
+    // 如果有事务,那么加入事务,没有的话新建一个(不写的情况下)
+    @Transactional(propagation=Propagation.REQUIRED)
+    // 容器不为这个方法开启事务
+    @Transactional(propagation=Propagation.NOT_SUPPORTED)
+    // 不管是否存在事务,都创建一个新的事务,原来的挂起,新的执行完毕,继续执行老的事务
+    @Transactional(propagation=Propagation.REQUIRES_NEW)
+    // 必须在一个已有的事务中执行,否则抛出异常
+    @Transactional(propagation=Propagation.MANDATORY)
+    // 必须在一个没有的事务中执行,否则抛出异常(与Propagation.MANDATORY相反)
+    @Transactional(propagation=Propagation.NEVER)
+    // 如果其他bean调用这个方法,在其他bean中声明事务,那就用事务.如果其他bean没有声明事务,那就不用事务.
+    @Transactional(propagation=Propagation.SUPPORTS)
+
+    /*
+    public void methodName(){
+       // 本类的修改方法 1
+       update();
+       // 调用其他类的修改方法
+       otherBean.update();
+       // 本类的修改方法 2
+       update();
+    }
+    other 失败了不会影响本类的修改提交成功
+    本类 update 的失败, other 也失败
+    */
+@Transactional(propagation=Propagation.NESTED)
+// readOnly=true只读,不能更新,删除
+@Transactional (propagation = Propagation.REQUIRED,readOnly=true)
+// 设置超时时间
+@Transactional (propagation = Propagation.REQUIRED,timeout=30)
+// 设置数据库隔离级别
+@Transactional (propagation = Propagation.REQUIRED,isolation=Isolation.DEFAULT)
+
+Spring Transaction 中有一个很重要的属性：Propagation。主要用来配置当前需要执行的方法，与当前是否有 transaction 之间的关系。
+
+一、Propagation取值：
+
+REQUIRED（默认值）：在有 transaction 状态下执行；如当前没有 transaction，则创建新的 transaction；
+
+SUPPORTS：如当前有 transaction，则在 transaction 状态下执行；如果当前没有 transaction，在无 transaction 状态下执行；
+
+MANDATORY：必须在有 transaction 状态下执行，如果当前没有 transaction，则抛出异常 IllegalTransactionStateException；
+
+REQUIRES_NEW：创建新的 transaction 并执行；如果当前已有 transaction，则将当前 transaction 挂起；
+
+NOT_SUPPORTED：在无 transaction 状态下执行；如果当前已有 transaction，则将当前 transaction 挂起；
+
+NEVER：在无 transaction 状态下执行；如果当前已有 transaction，则抛出异常 IllegalTransactionStateException。
+
+NESTED：如果当前存在 transaction，则在嵌套 transaction 内执行。如果当前没有 transaction，则进行与 REQUIRED 类似的操作。

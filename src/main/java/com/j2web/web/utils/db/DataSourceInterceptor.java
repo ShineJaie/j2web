@@ -21,8 +21,17 @@ public class DataSourceInterceptor {
     }
 
     @Before("dataSourceSlave()")
-    public void logBefore(JoinPoint joinPoint) {
+    public void setSourceSlave(JoinPoint joinPoint) {
         DataSourceTypeManager.set(DataSources.SLAVE);
+    }
+
+    @Pointcut("execution(* com.j2web.web.service.master..*.*(..))")
+    public void dataSourceMaster() {
+    }
+
+    @Before("dataSourceMaster()")
+    public void setSourceMaster(JoinPoint joinPoint) {
+        DataSourceTypeManager.set(DataSources.MASTER);
     }
 
 }
