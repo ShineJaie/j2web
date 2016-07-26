@@ -11,6 +11,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +34,7 @@ public class LoginController {
      * @param response HttpServletResponse
      * @return ModelAndView
      */
-    @RequestMapping(value = "/login")
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
 
         String status = MyWebUtils.dealWithNullVal(request.getParameter("status"));
@@ -73,7 +74,7 @@ public class LoginController {
      * @param response httpResponse
      * @return 首页
      */
-    @RequestMapping(value = "/logout")
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -91,7 +92,7 @@ public class LoginController {
      *
      * @return page
      */
-    @RequestMapping(value = {"/", "/home**"})
+    @RequestMapping(value = {"/", "/home**"}, method = RequestMethod.GET)
     public ModelAndView defaultPage(HttpServletRequest request) {
 
         // 登录后的目标地址
@@ -112,7 +113,7 @@ public class LoginController {
      *
      * @return page
      */
-    @RequestMapping(value = "/admin**")
+    @RequestMapping(value = "/admin**", method = RequestMethod.GET)
     public ModelAndView adminPage(HttpServletRequest request) {
 
         ModelAndView mav = new ModelAndView();
@@ -137,7 +138,7 @@ public class LoginController {
      *
      * @return 403 页面
      */
-    @RequestMapping(value = "/403")
+    @RequestMapping(value = "/403", method = RequestMethod.GET)
     public ModelAndView accesssDenied() {
 
         ModelAndView mav = new ModelAndView();

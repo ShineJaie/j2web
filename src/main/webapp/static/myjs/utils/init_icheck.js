@@ -1,6 +1,7 @@
 define(['jquery', 'icheck'], function ($, iCheck) {
 
-    // 提示: 对于 checkbox 获取选中的值为 $('input:checkbox:checked').attr('name')
+    // 提示: 对于 checkbox 获取选中的值为 $('input:checkbox:checked').val()
+    // 对于 radio 获取选中的值为 $('input:radio:checked').val()
 
     var initICheck = function () {
         $('input').iCheck({
@@ -9,31 +10,7 @@ define(['jquery', 'icheck'], function ($, iCheck) {
         });
     };
 
-    var runICheckRadio = function () {
-        $('input:radio').off('ifChecked').on('ifChecked', function (event) {
-            $(this).attr("param_value", true);
-        });
-        $('input:radio').off('ifUnchecked').on('ifUnchecked', function (event) {
-            $(this).attr("param_value", false);
-        });
-    };
-
-    var initICheckRadioValue = function (selectorStr) {
-        $(selectorStr).each(function () {
-            if (!$(this).attr("param_value")) {
-                $(this).attr("param_value", false);
-            } else if ($(this).attr("param_value") == "false") {
-                $(this).iCheck('uncheck');
-            } else {
-                $(this).iCheck('check');
-            }
-        });
-    };
-
-
     return {
-        initICheck: initICheck,
-        runICheckRadio: runICheckRadio,
-        initICheckRadioValue: initICheckRadioValue
+        initICheck: initICheck
     }
 });

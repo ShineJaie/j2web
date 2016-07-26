@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50631
 File Encoding         : 65001
 
-Date: 2016-07-25 18:22:53
+Date: 2016-07-26 10:56:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -78,8 +78,8 @@ CREATE TABLE `users` (
   `username` varchar(20) DEFAULT NULL,
   `password` varchar(150) DEFAULT NULL,
   `email` varchar(30) DEFAULT NULL,
-  `sex` tinyint(4) DEFAULT NULL COMMENT '1: 男, 2: 女',
-  `enabled` tinyint(4) DEFAULT '1' COMMENT '1: 启用, 0: 不启用',
+  `sex` tinyint(4) DEFAULT NULL COMMENT '0: 女; 1: 男',
+  `enabled` tinyint(4) DEFAULT '1' COMMENT '1: 启用; 0: 不启用',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 

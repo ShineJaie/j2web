@@ -1,14 +1,14 @@
-关于 RESTful 它就是一个规范、约定
+关于 RESTful(Representational State Transfer) 它就是一个规范、约定
 
 一般来讲譬如  /user这样的地址
 
-GET: /user/1 代表获取ID为1的用户信息
+GET(SELECT): /user/1 代表获取ID为1的用户信息
 
-POST: /user  代表新增一个用户，post参数里面要带各种参数值
+POST(CREATE): /user  代表新增一个用户，post参数里面要带各种参数值
 
-PUT: /user/1 代表更新ID为1的用户，参数在表单参数里(类似POST)
+PUT(UPDATE): /user/1 代表更新ID为1的用户，参数在表单参数里(类似POST)
 
-DELETE: /user/1 代表删除ID为1的用户
+DELETE(DELETE): /user/1 代表删除ID为1的用户
 
 Spring MVC 4 中原生就支持 REST API
 首先我们随便新建一个类，譬如叫 UserController

@@ -20,7 +20,7 @@ public class UserController {
     UserService userService;
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    public Users getUser(@PathVariable Integer id) {
+    public Users getUser(@PathVariable("id") Integer id) {
         return userService.getUser(id);
     }
 

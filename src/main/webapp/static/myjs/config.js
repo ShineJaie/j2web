@@ -82,13 +82,90 @@ define(['jquery', 'pjax', 'bootstrap', 'nprogress'], function ($, pjax, bootstra
     setAjaxSetup();
 
     /**
-     *获取紧跟项目名后的模块名
+     * 获取紧跟项目名后的模块名
      * @return {string} 项目/:appName
      */
     var getAppName = function () {
         var pathArr = window.location.pathname.split('/');
         return pathArr[2].toLowerCase();
     };
+
+    /**
+     * 封装 $.put and $.delete 到全局 jquery
+     */
+    var initPutAndDeleteRequest = function () {
+        $.each(["put", "delete"], function (i, method) {
+            /**
+             * 封闭 $.put and $.delete
+             * @param url 一个包含发送请求的 URL 字符串。
+             * @param data 一个普通对象或字符串，通过请求发送给服务器。
+             * @param success 当请求成功后执行的回调函数。<br/>
+             * 如果提供 dataType 选项，那么这个 success 选项是必须的，<br/>
+             * 但这种情况下你可以使用 null。<br/>
+             * @param dataType 从服务器返回的预期的数据类型。<br/>
+             * 默认：智能猜测（xml, json, script, text，html）。
+             */
+            $[method] = function (url, data, success, dataType) {
+                if ($.isFunction(data)) {
+                    dataType = dataType || success;
+                    success = data;
+                    data = undefined;
+                }
+
+                return $.ajax({
+                    url: url,
+                    type: method,
+                    dataType: dataType,
+                    data: data,
+                    success: success
+                });
+            };
+        });
+    };
+    initPutAndDeleteRequest();
+
+    /**
+     * 封闭 pjax 动态加载页面 $.pjax_load 到全局 jquery
+     */
+    var initPjaxLoadHtml = function () {
+        $.each(["pjax_load"], function (i, method) {
+            /**
+             * 封闭 $.pjax_load
+             * @param url 一个包含发送请求的 URL 字符串。
+             * @param data 一个普通对象或字符串，通过请求发送给服务器。
+             * @param success 当请求成功后执行的回调函数。
+             */
+            $[method] = function (url, data, success) {
+
+                var selectors = url.split(" ");
+                var container = "";
+                for (var j = 1; j < selectors.length; ++j) {
+                    container += (selectors[j] + " ");
+                }
+                if (container.length <= 0) {
+                    container = "#page-content-wrapper";
+                }
+                container = trimStr(container);
+
+                url = url.split(" ")[0];
+
+                if ($.isFunction(data)) {
+                    success = data;
+                    data = undefined;
+                }
+
+                return $.pjax({
+                    url: url,
+                    type: 'GET',
+                    container: container,
+                    dataType: 'html',
+                    data: data,
+                    success: success
+                });
+            };
+        });
+    };
+    initPjaxLoadHtml();
 
     return {
         loadModel: loadModel,

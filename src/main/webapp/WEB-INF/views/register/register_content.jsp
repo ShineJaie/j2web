@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div class="container" id="jcontent-wrapper" funcModel="register" funcInit="initpage_register" menuSelect="page_register">
+<div class="container" id="jcontent-wrapper" funcModel="register" funcInit="initpage_register"
+     menuSelect="page_register">
     <div class="row">
         <div class="col-sm-8 col-sm-offset-2">
             <div class="page-header">
@@ -61,12 +62,12 @@
 
                             <div class="col-sm-5">
                                 <label class="radio-inline">
-                                    <input class="radio_male" type="radio" name="sex" value="1"
-                                           param_value="true">
+                                    <input type="radio" name="sex" value="1"
+                                           checked>
                                     <span style="padding-left: 5px;">男</span>
                                 </label>
                                 <label class="radio-inline">
-                                    <input class="radioFemale" type="radio" name="sex" value="0">
+                                    <input type="radio" name="sex" value="0">
                                     <span style="padding-left: 5px;">女</span>
                                 </label>
                             </div>
@@ -76,8 +77,8 @@
                             <div class="col-sm-5 col-sm-offset-4">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" id="agree" name="agree" value="agree"/>
-                                        接受我们的相关规定
+                                        <input type="checkbox" name="enabled" value="1"/>
+                                        启用该用户
                                     </label>
                                 </div>
                             </div>

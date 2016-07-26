@@ -4,8 +4,6 @@ define(['jquery', 'pjax', 'bootstrap', 'config', 'sweetalert', 'validate_conf', 
         var initpage_register = function () {
 
             init_icheck.initICheck();
-            init_icheck.initICheckRadioValue('input:radio');
-            init_icheck.runICheckRadio();
 
             validate_conf.setValidConfig();
             validate_conf.validateAction('#register_form', {
@@ -45,53 +43,57 @@ define(['jquery', 'pjax', 'bootstrap', 'config', 'sweetalert', 'validate_conf', 
 
             $('.act_save').off('click').on('click', function () {
 
-                if ($('#register_form').valid()) {
-                    var params = {};
+                swal({
+                    title: "提交保存?",
+                    text: "确认提交请点击确定按钮!",
+                    type: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "确定!",
+                    cancelButtonText: "取消!",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        if ($('#register_form').valid()) {
+                            var params = {};
 
-                    $('.my_edit_value').each(function () {
-                        params[$(this).attr('name')] = $(this).val();
-                    });
-
-                    if ($('.radio_male').attr('param_value') == 'true') {
-                        params.sex = 1;
-                    } else {
-                        params.sex = 0;
-                    }
-
-                    $.post("/j2web/register/save", params, function (res) {
-
-                        if (res.status == 'success') {
-
-                            swal({
-                                title: "恭喜!",
-                                text: "注册成功, 2秒后将自动关闭该提示!",
-                                type: "success",
-                                timer: 2000,
-                                confirmButtonText: "确认:)"
+                            $('.my_edit_value').each(function () {
+                                params[$(this).attr('name')] = $(this).val();
                             });
 
-                            $.pjax.reload('#page-content-wrapper');
-                        } else {
-                            swal({
-                                title: "抱歉!",
-                                text: res.data,
-                                type: "error",
-                                confirmButtonText: "确认:("
+                            params.sex = $('input:radio:checked').val();
+
+                            $('input:checkbox:checked').each(function () {
+                                params[$(this).attr('name')] = $(this).val();
+                            });
+
+                            $.post('/j2web/register', function (result) {
+                                if (result.status == 'success') {
+                                    swal({
+                                        title: "恭喜!",
+                                        text: "注册成功, 5秒后将自动关闭该提示!",
+                                        type: "success",
+                                        timer: 5000,
+                                        confirmButtonText: "确认:)"
+                                    });
+
+                                    $.pjax.reload('#page-content-wrapper');
+                                } else {
+                                    swal({
+                                        title: "抱歉!",
+                                        text: result.data,
+                                        type: "error",
+                                        confirmButtonText: "确认:("
+                                    });
+                                }
                             });
                         }
+                    } else {
+                        swal("取消", "数据未提交", "error");
+                    }
+                });
 
-                    });
-
-
-                    /*// 测试 pjax 动态加载其它页面
-                    $.pjax({
-                        type: 'POST',
-                        url: "/j2web/home",
-                        container: '#page-content-wrapper',
-                        data: params,
-                        dataType: 'html'
-                    })*/
-                }
             });
 
         };

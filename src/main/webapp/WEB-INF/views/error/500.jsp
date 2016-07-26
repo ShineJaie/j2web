@@ -26,7 +26,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <h1 class="text-danger text-center">哎呀，服务器出错啦...</h1>
+            <h1 class="text-danger text-center">哎呀，请求出错啦...</h1>
 
             <c:if test="${!empty url}">
                 <h2>请求地址:
