@@ -17,7 +17,7 @@ public class Users {
     private String username; // 用户名
     private String password; // 密码
     private String email; // 邮箱
-    private int sex; // 性别,  0:女; 1:男
+    private int sex; // 性别, 0:女; 1:男
     private int enabled; // 是否启用, 0:不启用; 1:启用
 
     public int getId() {
