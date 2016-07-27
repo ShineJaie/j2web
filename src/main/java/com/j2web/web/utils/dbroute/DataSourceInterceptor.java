@@ -1,4 +1,4 @@
-package com.j2web.web.utils.db;
+package com.j2web.web.utils.dbroute;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;

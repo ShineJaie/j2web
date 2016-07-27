@@ -14,7 +14,7 @@ requirejs.config({
                 'jquery',
                 'css!../static/dependency/bootstrap/css/bootstrap.min.css',
                 'css!../static/dependency/font-awesome/css/font-awesome.min.css',
-                'css!../static/mycss/globallayout.css'
+                'css!../static/mycss/base.css'
             ]
             // exports 对于 bootstrap 不需要.
             // 因为 bootstrap 的所有 js 代码都已经作为 jquery 插件在 jquery 闭包中执行, 没有东西需要输出.

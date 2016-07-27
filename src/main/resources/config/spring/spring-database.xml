@@ -52,10 +52,10 @@
     </bean>
 
     <!-- 数据库路由配置 -->
-    <bean id="dataSource" class="com.j2web.web.utils.db.ThreadLocalRountingDataSource">
+    <bean id="dataSource" class="com.j2web.web.utils.dbroute.ThreadLocalRountingDataSource">
         <property name="defaultTargetDataSource" ref="dataSourceMaster"/>
         <property name="targetDataSources">
-            <map key-type="com.j2web.web.utils.db.DataSources">
+            <map key-type="com.j2web.web.utils.dbroute.DataSources">
                 <entry key="MASTER" value-ref="dataSourceMaster"/>
                 <entry key="SLAVE" value-ref="dataSourceSlave"/>
                 <!-- 这里还可以加多个 dataSource -->

@@ -1,4 +1,4 @@
-package com.j2web.web.utils.db;
+package com.j2web.web.utils.dbroute;
 
 /**
  * 数据源的类别：master/slave

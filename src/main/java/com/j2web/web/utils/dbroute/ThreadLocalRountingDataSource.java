@@ -1,4 +1,4 @@
-package com.j2web.web.utils.db;
+package com.j2web.web.utils.dbroute;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
