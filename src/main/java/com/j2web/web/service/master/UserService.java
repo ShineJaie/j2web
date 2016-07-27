@@ -21,7 +21,7 @@ public class UserService {
     /**
      * 事务处理测试
      */
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+//    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void addUser(String username, Integer sex) throws Exception {
 
         Users user = new Users();
@@ -37,7 +37,7 @@ public class UserService {
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public Users getUser(Integer userId) throws Exception {
 
-//        addUser("吴仙杰", 1);
+        addUser("吴仙杰", 1);
 
         Users user = new Users();
         user.setId(userId);
