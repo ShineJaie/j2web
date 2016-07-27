@@ -1,6 +1,7 @@
 package com.j2web.web.db.master.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Date;
 
@@ -15,6 +16,7 @@ public class Users {
     @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date modifydate; // 修改日期
     private String username; // 用户名
+    @JsonIgnore
     private String password; // 密码
     private String email; // 邮箱
     private int sex; // 性别, 0:女; 1:男

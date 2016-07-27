@@ -2,14 +2,12 @@ package com.j2web.web.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.log4j.Logger;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +25,7 @@ public class MyWebUtils implements ApplicationContextAware {
     /**
      * Spring 上下文
      */
-    public static ApplicationContext APPLICATION_CONTEXT = null;
+    private static ApplicationContext applicationContext = null;
 
     /**
      * 单个的 jedis 实例不是线程安全,<br/>
@@ -36,12 +34,12 @@ public class MyWebUtils implements ApplicationContextAware {
      */
     public static JedisPool jedisPool = null;
 
-    public ApplicationContext getApplicationContext() {
-        return APPLICATION_CONTEXT;
+    public static ApplicationContext getApplicationContext() {
+        return applicationContext;
     }
 
     public void setApplicationContext(ApplicationContext applicationContext) {
-        APPLICATION_CONTEXT = applicationContext;
+        MyWebUtils.applicationContext = applicationContext;
     }
 
     /**

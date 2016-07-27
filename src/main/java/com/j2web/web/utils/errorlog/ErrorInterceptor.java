@@ -24,7 +24,8 @@ public class ErrorInterceptor {
     private static final Logger logger = Logger.getLogger(ErrorInterceptor.class);
 
     @AfterThrowing(
-            pointcut = "execution(* com.j2web.web.service..*.*(..)) && " +
+            pointcut = "execution(* com.j2web.web..*.*(..)) && " +
+                    "!execution(* com.j2web.web.db..*.*(..)) && " +
                     "!execution(* com.j2web.web.service.master.SysErrorService.*(..)))",
             throwing = "error")
     public void logError(JoinPoint joinPoint, Throwable error) {
