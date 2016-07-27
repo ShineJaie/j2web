@@ -21,7 +21,7 @@ public class UserService {
     /**
      * 事务处理测试
      */
-//    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void addUser(String username, Integer sex) throws Exception {
 
         Users user = new Users();
@@ -29,16 +29,20 @@ public class UserService {
         user.setSex(sex);
 
         userMapper.insertUser(user);
-//        int num = 10 / 0;
+        int num = 10 / 0;
 //        throw new RuntimeException("手动抛出运行时异常");
 //        throw new Exception("手工 checked 异常");
     }
 
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public Users getUser(Integer userId) {
+    public Users getUser(Integer userId) throws Exception {
+
+//        addUser("吴仙杰", 1);
+
         Users user = new Users();
         user.setId(userId);
         return userMapper.selectById(user).get(0);
     }
+
 
 }
