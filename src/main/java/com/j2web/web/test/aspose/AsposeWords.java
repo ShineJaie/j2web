@@ -62,7 +62,7 @@ public class AsposeWords {
         engine.buildReport(doc, bean, "bean");
 
         // Save the finished document to disk.
-        doc.save(dataDir + "output.doc");
+        doc.save(dataDir + "output.docx");
         System.out.println("Document loaded and saved successfully.");
     }
 
