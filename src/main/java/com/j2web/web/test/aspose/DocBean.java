@@ -12,6 +12,7 @@ public class DocBean {
     private String name;
     public String message;
     public String currDateStr;
+    public Integer count;
     public byte[] photo;
     public List<DocUser> list = new ArrayList<>();
 

@@ -49,6 +49,8 @@ public class AsposeWords {
         bean.list.add(user2);
         bean.list.add(user3);
 
+        bean.count = 0;
+
         // open image
         String imageName = "dog.png";
         System.out.println(dataDir + imageName);
